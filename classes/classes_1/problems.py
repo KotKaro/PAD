@@ -1,5 +1,6 @@
 from typing import List
 
+
 def check_range(value: int, start: int, stop: int) -> str:
     return "%s %s jest miedzy %s a %s" % (value, "" if start <= value <= stop else "NIE", start, stop)
 
