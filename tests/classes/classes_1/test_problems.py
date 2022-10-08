@@ -44,14 +44,14 @@ class MyTestCase(unittest.TestCase):
         result = volume_of_sphere(2)
 
         # Assert
-        self.assertEqual(result, 12.56)
+        self.assertEqual(result, 33.49)
 
     def test_volume_of_sphere_for_radius_3_returns28dot26(self):
         # Act
         result = volume_of_sphere(3)
 
         # Assert
-        self.assertEqual(result, 28.26)
+        self.assertEqual(result, 113.04)
 
     def test_num_fact_for_5_returns_factorial_equal_to_120(self):
         # Act

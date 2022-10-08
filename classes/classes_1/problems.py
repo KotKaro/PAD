@@ -23,7 +23,7 @@ my_list = list(set(my_list))
 
 def volume_of_sphere(radius: int) -> float:
     pi_value = 3.14
-    return round(pi_value * (radius ** 2), 2)
+    return round(4/3 * pi_value * (radius ** 3), 2)
 
 
 def num_fact(to: int) -> int:
