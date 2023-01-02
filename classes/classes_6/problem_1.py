@@ -2,6 +2,7 @@ from dash import Dash, html, dcc, Input, Output, State
 import plotly.express as px
 import pandas as pd
 
+mode = 'Regresja'
 df = pd.read_csv('./winequelity.csv');
 
 
@@ -32,30 +33,20 @@ app.layout = html.Div(children=[
             "value": "Klasyfikacja",
         }
     ])]),
-    html.Div(id='dd-output-container'),
-    html.Div(id='column-names-dropdown-reg-output-container'),
-    html.Div(id='column-names-dropdown-klas-output-container')
-])
-
-
-@app.callback(
-    Output('dd-output-container', 'children'),
-    Input('dropdown', 'value')
-)
-def update_options(value):
-    dropdown_id = 'reg' if value == 'Regresja' else 'klas'
-
-    return [
-        dcc.Dropdown(id=f'column-names-dropdown-{dropdown_id}', options=[{
+    html.Div([
+        dcc.Dropdown(id='column-names-dropdown', options=[{
             "label": col,
             "value": col
         } for col in df.columns])
-    ]
+    ]),
+    html.Div(id='graph-container')
+])
 
 
 def on_value_selected(value, main_column_name):
     def get_dummies_col(dataframe, sep=","):
-        dataframe["dummies"] = [sep.join([item for item in row if isinstance(item, str)]) for row in dataframe.itertuples(index=False)]
+        dataframe["dummies"] = [sep.join([item for item in row if isinstance(item, str)]) for row in
+                                dataframe.itertuples(index=False)]
         return dataframe.replace({"dummies": {"": "None/NA", "None": "None/NA"}})
 
     result_dataframe = df[[main_column_name, value]]
@@ -72,19 +63,12 @@ def on_value_selected(value, main_column_name):
 
 
 @app.callback(
-    Output('column-names-dropdown-klas-output-container', 'children'),
-    Input('column-names-dropdown-klas', 'value')
+    Output('graph-container', 'children'),
+    Input('dropdown', 'value'),
+    Input('column-names-dropdown', 'value')
 )
-def on_classification_dropdown_selection(value):
-    return on_value_selected(value, 'pH')
-
-
-@app.callback(
-    Output('column-names-dropdown-reg-output-container', 'children'),
-    Input('column-names-dropdown-reg', 'value')
-)
-def on_regression_dropdown_selection(value):
-    return on_value_selected(value, 'target')
+def on_regression_dropdown_selection(graph_type, column_name):
+    return on_value_selected(column_name, 'target' if graph_type == 'Regresja' else 'pH')
 
 
 if __name__ == '__main__':
