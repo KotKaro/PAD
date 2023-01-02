@@ -55,7 +55,7 @@ def update_options(value):
 
 def on_value_selected(value, main_column_name):
     def get_dummies_col(dataframe, sep=","):
-        dataframe["dummies"] = [[item for item in row if isinstance(item, str)] for row in dataframe.itertuples(index=False)]
+        dataframe["dummies"] = [sep.join([item for item in row if isinstance(item, str)]) for row in dataframe.itertuples(index=False)]
         return dataframe.replace({"dummies": {"": "None/NA", "None": "None/NA"}})
 
     result_dataframe = df[[main_column_name, value]]
